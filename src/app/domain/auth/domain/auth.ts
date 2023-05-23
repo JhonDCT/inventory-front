@@ -1,4 +1,4 @@
-import { Primitives } from "../../domain/shared/primitives";
+import { Primitives } from "../../shared/primitives";
 import { User } from "../../user/domain/user";
 import { UserDocumentNumber } from "../../user/domain/user-document-number";
 import { UserId } from "../../user/domain/user-id";

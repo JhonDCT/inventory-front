@@ -1,7 +1,8 @@
-import { Component, Inject, OnDestroy, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
-import { AUTH_REPOSITORY } from "src/app/app.module";
-import { AuthHttpRepository } from "src/app/core/auth/infrastructure/auth-http.repository";
+import { Router } from "@angular/router";
+import { switchMap } from "rxjs";
+import { AuthHttpRepository } from "src/app/domain/auth/infrastructure/auth-http.repository";
 
 @Component({
   selector: "app-login",
@@ -14,7 +15,10 @@ export class LoginComponent implements OnInit, OnDestroy {
     pass: new FormControl("", [Validators.required]),
   });
 
-  constructor(private authRepository: AuthHttpRepository) {}
+  constructor(
+    private authRepository: AuthHttpRepository,
+    private router: Router
+  ) {}
 
   ngOnInit() {}
   ngOnDestroy() {}
@@ -22,8 +26,11 @@ export class LoginComponent implements OnInit, OnDestroy {
   onSignIn(): void {
     const { user, pass } = this.form.value;
 
-    this.authRepository.signIn(user, pass).subscribe((user) => {
-      console.log(user);
-    });
+    this.authRepository
+      .signIn(user, pass)
+      .pipe(switchMap(() => this.authRepository.profile()))
+      .subscribe(() => {
+        this.router.navigateByUrl("/dashboard");
+      });
   }
 }

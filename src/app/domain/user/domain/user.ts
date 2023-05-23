@@ -1,8 +1,8 @@
-import { Primitives } from "../../domain/shared/primitives";
+import { Primitives } from "../../shared/primitives";
 import { UserDocumentNumber } from "./user-document-number";
 import { UserId } from "./user-id";
 import { UserTelephone } from "./user-telephone";
- 
+
 export class User {
   constructor(
     readonly id: UserId,

@@ -1,9 +1,7 @@
-import { Observable } from "rxjs";
-import { User } from "../../user/domain/user";
-import { AuthRepository } from "../domain/auth-repository";
 import { Inject, Injectable } from "@angular/core";
+import { Observable } from "rxjs";
 import { AUTH_REPOSITORY } from "src/app/app.module";
-import { AuthHttpRepository } from "../infrastructure/auth-http.repository";
+import { AuthRepository } from "../domain/auth-repository";
 
 @Injectable()
 export class SignIn {
@@ -13,7 +11,7 @@ export class SignIn {
     // this.repository = repository;
   }
 
-  run(username: string, password: string): Observable<User> {
+  run(username: string, password: string): Observable<void> {
     return this.repository.signIn(username, password);
   }
 }

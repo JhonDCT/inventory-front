@@ -1,7 +1,7 @@
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { HTTP_INTERCEPTORS, HttpClientModule } from "@angular/common/http";
 import { InjectionToken, NgModule } from "@angular/core";
 import { FormsModule } from "@angular/forms";
-import { HttpClient, HttpClientModule } from "@angular/common/http";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { RouterModule } from "@angular/router";
 
 import { AppComponent } from "./app.component";
@@ -12,7 +12,7 @@ import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 
 import { AppRoutingModule } from "./app.routing";
 import { ComponentsModule } from "./components/components.module";
-import { AuthHttpRepository } from "./core/auth/infrastructure/auth-http.repository";
+import { AppHttpInterceptor } from "./core/interceptor/http.interceptor";
 
 export const AUTH_REPOSITORY = new InjectionToken("AuthRepository");
 
@@ -32,6 +32,11 @@ export const AUTH_REPOSITORY = new InjectionToken("AuthRepository");
     //   provide: AUTH_REPOSITORY,
     //   useClass: new AuthHttpRepository(),
     // },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AppHttpInterceptor,
+      multi: true,
+    },
   ],
   bootstrap: [AppComponent],
 })

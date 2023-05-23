@@ -1,0 +1,13 @@
+<div class="table-responsive">
+  {{ columns }}
+  <table
+    cdk-table
+    [dataSource]="rows"
+    class="table align-items-center table-flush"
+  >
+    <ng-container cdkColumnDef="name">
+      <th cdk-header-cell *cdkHeaderCellDef>Nombre</th>
+      <td cdk-cell *cdkCellDef="let row">{{ row.username }}</td>
+    </ng-container>
+  </table>
+</div>
