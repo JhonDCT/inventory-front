@@ -1,20 +1,17 @@
 import { Primitives } from "../../domain/shared/primitives";
 import { UserDocumentNumber } from "./user-document-number";
-import { UserId } from "./user-id";
 import { UserTelephone } from "./user-telephone";
- 
+
 export class User {
   constructor(
-    readonly id: UserId,
     readonly name: string,
     readonly lastName: string,
     readonly username: string,
     readonly documentNumber: UserDocumentNumber,
     readonly telephone: UserTelephone
-  ) {}
+  ) { }
 
   public static create({
-    id,
     name,
     lastName,
     username,
@@ -22,7 +19,6 @@ export class User {
     telephone,
   }: Primitives<User>): User {
     return new User(
-      new UserId(id),
       name,
       lastName,
       username,
@@ -31,13 +27,12 @@ export class User {
     );
   }
 
-  idValue(): number {
-    return this.id.value;
+  fullNameValue(): string {
+    return `${this.name} ${this.lastName}`;
   }
 
   toPrimitives(): Primitives<User> {
     return {
-      id: this.id.value,
       name: this.name,
       lastName: this.lastName,
       username: this.username,

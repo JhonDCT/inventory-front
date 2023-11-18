@@ -1,6 +1,7 @@
-import { Component, Inject, OnDestroy, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
-import { AUTH_REPOSITORY } from "src/app/app.module";
+import { Router } from "@angular/router";
+import { SignIn } from "src/app/core/auth/application/sign-in";
 import { AuthHttpRepository } from "src/app/core/auth/infrastructure/auth-http.repository";
 
 @Component({
@@ -14,16 +15,17 @@ export class LoginComponent implements OnInit, OnDestroy {
     pass: new FormControl("", [Validators.required]),
   });
 
-  constructor(private authRepository: AuthHttpRepository) {}
+  constructor(private signIn: SignIn, private router: Router, private authHttp: AuthHttpRepository) { }
 
-  ngOnInit() {}
-  ngOnDestroy() {}
+  ngOnInit() { }
+
+  ngOnDestroy() { }
 
   onSignIn(): void {
     const { user, pass } = this.form.value;
 
-    this.authRepository.signIn(user, pass).subscribe((user) => {
-      console.log(user);
-    });
+    this.signIn.run(user, pass).subscribe(() => {
+      this.router.navigateByUrl('/dashboard');
+    })
   }
 }

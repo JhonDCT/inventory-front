@@ -1,19 +1,18 @@
-import { Observable } from "rxjs";
-import { User } from "../../user/domain/user";
-import { AuthRepository } from "../domain/auth-repository";
-import { Inject, Injectable } from "@angular/core";
-import { AUTH_REPOSITORY } from "src/app/app.module";
+import { Injectable } from "@angular/core";
+import { Observable, map, switchMap } from "rxjs";
 import { AuthHttpRepository } from "../infrastructure/auth-http.repository";
+import { AuthStorageRepository } from "../infrastructure/auth-storage.repository";
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class SignIn {
-  // private repository: AuthRepository;
-
-  constructor(@Inject(AUTH_REPOSITORY) private repository: AuthRepository) {
-    // this.repository = repository;
+  constructor(private authHttp: AuthHttpRepository, private authStorage: AuthStorageRepository) {
   }
 
-  run(username: string, password: string): Observable<User> {
-    return this.repository.signIn(username, password);
+  run(username: string, password: string): Observable<void> {
+    return this.authHttp.signIn(username, password).pipe(
+      map(accessToken => {
+        this.authStorage.persistenceToken(accessToken);
+      }),
+    );
   }
 }

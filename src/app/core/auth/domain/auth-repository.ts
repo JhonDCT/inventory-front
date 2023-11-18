@@ -1,9 +1,9 @@
 import { Observable } from "rxjs";
-import { User } from "../../user/domain/user";
+import { AuthToken } from "./auth-token";
 
 export interface AuthRepository {
-  signIn(username: string, password: string): Observable<User>;
+  signIn(username: string, password: string): Observable<string>;
   logOut(): Observable<void>;
-  profile(): Observable<User>;
   persistenceToken(token: string): void;
+  getToken(): AuthToken;
 }

@@ -1,7 +1,7 @@
+import { HTTP_INTERCEPTORS, HttpClientModule } from "@angular/common/http";
+import { ErrorHandler, InjectionToken, NgModule } from "@angular/core";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { InjectionToken, NgModule } from "@angular/core";
-import { FormsModule } from "@angular/forms";
-import { HttpClient, HttpClientModule } from "@angular/common/http";
 import { RouterModule } from "@angular/router";
 
 import { AppComponent } from "./app.component";
@@ -12,7 +12,11 @@ import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 
 import { AppRoutingModule } from "./app.routing";
 import { ComponentsModule } from "./components/components.module";
-import { AuthHttpRepository } from "./core/auth/infrastructure/auth-http.repository";
+import { AppErrorHandler } from "./core/error/error.handler";
+import { AppHttpInterceptor } from "./core/interceptor/http.interceptor";
+import { ProductsComponent } from './pages/products/products.component';
+import { ProductCreateComponent } from './pages/product-create/product-create.component';
+import { ProductUpdateComponent } from './pages/product-update/product-update.component';
 
 export const AUTH_REPOSITORY = new InjectionToken("AuthRepository");
 
@@ -25,14 +29,20 @@ export const AUTH_REPOSITORY = new InjectionToken("AuthRepository");
     NgbModule,
     RouterModule,
     AppRoutingModule,
+    ReactiveFormsModule
   ],
-  declarations: [AppComponent, AdminLayoutComponent, AuthLayoutComponent],
+  declarations: [AppComponent, AdminLayoutComponent, AuthLayoutComponent, ProductsComponent, ProductCreateComponent, ProductUpdateComponent,],
   providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AppHttpInterceptor,
+      multi: true
+    },
     // {
-    //   provide: AUTH_REPOSITORY,
-    //   useClass: new AuthHttpRepository(),
+    //   provide: ErrorHandler,
+    //   useClass: AppErrorHandler,
     // },
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

@@ -3,10 +3,10 @@ import Chart from 'chart.js';
 
 // core components
 import {
-  chartOptions,
-  parseOptions,
   chartExample1,
-  chartExample2
+  chartExample2,
+  chartOptions,
+  parseOptions
 } from "../../variables/charts";
 
 @Component({
@@ -15,26 +15,24 @@ import {
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
-
   public datasets: any;
   public data: any;
   public salesChart;
   public clicked: boolean = true;
   public clicked1: boolean = false;
 
-  ngOnInit() {
+  constructor() {}
 
+  ngOnInit() {
     this.datasets = [
       [0, 20, 10, 30, 15, 40, 20, 60, 60],
       [0, 20, 5, 25, 10, 30, 15, 40, 40]
     ];
     this.data = this.datasets[0];
 
-
     var chartOrders = document.getElementById('chart-orders');
 
     parseOptions(Chart, chartOptions());
-
 
     var ordersChart = new Chart(chartOrders, {
       type: 'bar',
